@@ -66,7 +66,6 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
         onNavigationDrawerItemSelected(0);
         initDrawer();
 
-
     }
 
 
@@ -186,7 +185,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
         hideFragments(transaction);
 
         switch (position) {
-            case 0:
+            case 0://主页面
                 closeDrawer();
                 if (mMainFragment == null) {
                     mMainFragment = new MainFragment();
@@ -197,7 +196,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
                 transaction.commit();
 
                 break;
-            case 1:
+            case 1://放松一下
                 closeDrawer();
                 if (mRelaxFragment == null) {
                     mRelaxFragment = new RelaxFragment();
@@ -208,8 +207,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
                 transaction.commit();
 
                 break;
-            case 2:
-
+            case 2://设置页
                 closeDrawer();
                 SettingsFragment.launch(MainActivity.this);
                 break;
