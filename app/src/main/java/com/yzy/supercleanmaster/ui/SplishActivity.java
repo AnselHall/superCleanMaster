@@ -51,7 +51,6 @@ public class SplishActivity extends BaseActivity {
         startService(new Intent(this, CoreService.class));
         startService(new Intent(this, CleanerService.class));
 
-
         if (!SharedPreferencesUtils.isShortCut(mContext)) {
             createShortCut();
         }
@@ -60,6 +59,9 @@ public class SplishActivity extends BaseActivity {
         setListener();
     }
 
+    /**
+     * 创建快捷方式
+     */
     private void createShortCut() {
         //创建快捷方式的Intent
         Intent shortCutIntent = new Intent();
@@ -73,7 +75,7 @@ public class SplishActivity extends BaseActivity {
         Intent enterIntent = new Intent();
         enterIntent.setAction("com.yzy.shortcut");
         enterIntent.addCategory("android.intent.category.DEFAULT");
-        //点击快捷图片，运行的程序主入口 i
+        //点击快捷图片，运行的程序主入口：enterIntent
         shortCutIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, enterIntent);
         //发送广播
         sendBroadcast(shortCutIntent);
@@ -84,11 +86,14 @@ public class SplishActivity extends BaseActivity {
     private void initAnim() {
         mFadeIn = AnimationUtils.loadAnimation(this, R.anim.welcome_fade_in);
         mFadeIn.setDuration(500);
+
         mFadeInScale = AnimationUtils.loadAnimation(this,
                 R.anim.welcome_fade_in_scale);
         mFadeInScale.setDuration(2000);
+
         mFadeOut = AnimationUtils.loadAnimation(this, R.anim.welcome_fade_out);
         mFadeOut.setDuration(500);
+
         mImageView.startAnimation(mFadeIn);
     }
 
