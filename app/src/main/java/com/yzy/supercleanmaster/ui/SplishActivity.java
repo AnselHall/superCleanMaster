@@ -20,10 +20,16 @@ import java.util.Random;
 public class SplishActivity extends BaseActivity {
 
     /**
-     * 三个切换的动画
+     * 淡入动画
      */
     private Animation mFadeIn;
+    /**
+     * 放大动画
+     */
     private Animation mFadeInScale;
+    /**
+     * 淡出动画
+     */
     private Animation mFadeOut;
 
     //  @InjectView(R.id.image)
@@ -55,17 +61,23 @@ public class SplishActivity extends BaseActivity {
     }
 
     private void createShortCut() {
-        // TODO Auto-generated method stub
-        Intent intent = new Intent();
-        intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-        intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "一键加速");
-        intent.putExtra("duplicate", false);
-        intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, BitmapFactory.decodeResource(getResources(), R.drawable.short_cut_icon));
-        Intent i = new Intent();
-        i.setAction("com.yzy.shortcut");
-        i.addCategory("android.intent.category.DEFAULT");
-        intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, i);
-        sendBroadcast(intent);
+        //创建快捷方式的Intent
+        Intent shortCutIntent = new Intent();
+        shortCutIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+        //快捷方式的名称
+        shortCutIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "一键加速");
+        //不允许重复创建
+        shortCutIntent.putExtra("duplicate", false);
+        //快捷方式的图标
+        shortCutIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, BitmapFactory.decodeResource(getResources(), R.drawable.short_cut_icon));
+        Intent enterIntent = new Intent();
+        enterIntent.setAction("com.yzy.shortcut");
+        enterIntent.addCategory("android.intent.category.DEFAULT");
+        //点击快捷图片，运行的程序主入口 i
+        shortCutIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, enterIntent);
+        //发送广播
+        sendBroadcast(shortCutIntent);
+
         SharedPreferencesUtils.setIsShortCut(mContext, true);
     }
 
