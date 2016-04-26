@@ -13,7 +13,7 @@ import com.yzy.supercleanmaster.R;
 import com.yzy.supercleanmaster.fragment.AutoStartFragment;
 import com.yzy.supercleanmaster.model.AutoStartInfo;
 import com.yzy.supercleanmaster.utils.ShellUtils;
-import com.yzy.supercleanmaster.utils.T;
+import com.yzy.supercleanmaster.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,7 +103,7 @@ public class AutoStartAdapter extends BaseAdapter {
 
                     } else {
 
-                        T.showLong(mContext, "该功能需要获取系统root权限，点击允许获取root权限");
+                        ToastUtils.showLong(mContext, "该功能需要获取系统root权限，点击允许获取root权限");
 
                     }
 
@@ -131,17 +131,17 @@ public class AutoStartAdapter extends BaseAdapter {
         ShellUtils.CommandResult mCommandResult = ShellUtils.execCommand(mSring, true, true);
 
         if (mCommandResult.result == 0) {
-            T.showLong(mContext, item.getLabel() + "已禁止");
+            ToastUtils.showLong(mContext, item.getLabel() + "已禁止");
             item.setEnable(false);
             notifyDataSetChanged();
             if (mHandler != null) {
                 mHandler.sendEmptyMessage(AutoStartFragment.REFRESH_BT);
             }
         } else {
-            T.showLong(mContext, item.getLabel() + "禁止失败");
+            ToastUtils.showLong(mContext, item.getLabel() + "禁止失败");
         }
 
-        // T.showLong(mContext, mCommandResult.result + "" + mCommandResult.errorMsg + mCommandResult.successMsg);
+        // ToastUtils.showLong(mContext, mCommandResult.result + "" + mCommandResult.errorMsg + mCommandResult.successMsg);
     }
 
     private void enableApp(AutoStartInfo item) {
@@ -159,16 +159,16 @@ public class AutoStartAdapter extends BaseAdapter {
         ShellUtils.CommandResult mCommandResult = ShellUtils.execCommand(mSring, true, true);
 
         if (mCommandResult.result == 0) {
-            T.showLong(mContext, item.getLabel() + "已开启");
+            ToastUtils.showLong(mContext, item.getLabel() + "已开启");
             item.setEnable(true);
             notifyDataSetChanged();
             if (mHandler != null) {
                 mHandler.sendEmptyMessage(AutoStartFragment.REFRESH_BT);
             }
         } else {
-            T.showLong(mContext, item.getLabel() + "开启失败");
+            ToastUtils.showLong(mContext, item.getLabel() + "开启失败");
         }
-        //   T.showLong(mContext, mCommandResult.result + "" + mCommandResult.errorMsg + mCommandResult.successMsg);
+        //   ToastUtils.showLong(mContext, mCommandResult.result + "" + mCommandResult.errorMsg + mCommandResult.successMsg);
     }
 
     class ViewHolder {

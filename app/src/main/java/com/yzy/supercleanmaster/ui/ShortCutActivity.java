@@ -22,7 +22,7 @@ import com.yzy.supercleanmaster.bean.AppProcessInfo;
 import com.yzy.supercleanmaster.service.CoreService;
 import com.yzy.supercleanmaster.utils.StorageUtil;
 import com.yzy.supercleanmaster.utils.SystemBarTintManager;
-import com.yzy.supercleanmaster.utils.T;
+import com.yzy.supercleanmaster.utils.ToastUtils;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -145,9 +145,9 @@ public class ShortCutActivity extends BaseActivity implements CoreService.OnPeoc
     @Override
     public void onCleanCompleted(Context context, long cacheSize) {
         if (cacheSize > 0) {
-            T.showLong(mContext, "一键清理 开源版,为您释放" + StorageUtil.convertStorage(cacheSize) + "内存");
+            ToastUtils.showLong(mContext, "一键清理 开源版,为您释放" + StorageUtil.convertStorage(cacheSize) + "内存");
         } else {
-            T.showLong(mContext, "您刚刚清理过内存,请稍后再来~");
+            ToastUtils.showLong(mContext, "您刚刚清理过内存,请稍后再来~");
         }
 
         finish();

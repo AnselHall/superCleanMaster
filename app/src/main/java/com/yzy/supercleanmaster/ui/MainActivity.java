@@ -24,7 +24,7 @@ import com.yzy.supercleanmaster.fragment.NavigationDrawerFragment;
 import com.yzy.supercleanmaster.fragment.RelaxFragment;
 import com.yzy.supercleanmaster.fragment.SettingsFragment;
 import com.yzy.supercleanmaster.utils.SystemBarTintManager;
-import com.yzy.supercleanmaster.utils.T;
+import com.yzy.supercleanmaster.utils.ToastUtils;
 import com.yzy.supercleanmaster.utils.UIElementsHelper;
 
 import java.util.Date;
@@ -53,6 +53,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
     RelaxFragment mRelaxFragment;
     public static final long TWO_SECOND = 2 * 1000;
     long preTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +61,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
 
         mFragmentContainerView = (View) findViewById(R.id.navigation_drawer);
         mTitle = getTitle();
-       applyKitKatTranslucency();
+        applyKitKatTranslucency();
 
         onNavigationDrawerItemSelected(0);
         initDrawer();
@@ -115,6 +116,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
         // as you specify a parent activity in AndroidManifest.xml.
 
         if (item.getItemId() == android.R.id.home) {
+            //判断给定的 View(mFragmentContainerView) 是否处于打开状态
             if (mDrawerLayout.isDrawerOpen(mFragmentContainerView)) {
                 mDrawerLayout.closeDrawer(mFragmentContainerView);
             } else {
@@ -243,7 +245,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
             // 如果时间间隔大于2秒, 不处理
             if ((currentTime - preTime) > TWO_SECOND) {
                 // 显示消息
-                T.showShort(mContext, "再按一次退出应用程序");
+                ToastUtils.showShort(mContext, "再按一次退出应用程序");
 
                 // 更新时间
                 preTime = currentTime;

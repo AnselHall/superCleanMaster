@@ -19,7 +19,7 @@ import com.yzy.supercleanmaster.R;
 import com.yzy.supercleanmaster.base.FragmentContainerActivity;
 import com.yzy.supercleanmaster.ui.AboutActivity;
 import com.yzy.supercleanmaster.utils.AppUtil;
-import com.yzy.supercleanmaster.utils.T;
+import com.yzy.supercleanmaster.utils.ToastUtils;
 import com.yzy.supercleanmaster.utils.Utils;
 
 
@@ -82,7 +82,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
                 @Override
                 public void onUpdateReturned(int i, UpdateResponse updateResponse) {
                     if (i != 0) {
-                        T.showLong(getActivity(), "当前版本为最新版本！");
+                        ToastUtils.showLong(getActivity(), "当前版本为最新版本！");
                     }
 
                 }
@@ -138,7 +138,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         i.addCategory("android.intent.category.DEFAULT");
         intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, i);
         getActivity().sendBroadcast(intent);
-        T.showLong(getActivity(), "“一键加速”快捷图标已创建");
+        ToastUtils.showLong(getActivity(), "“一键加速”快捷图标已创建");
 
     }
 
@@ -152,7 +152,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         }
         // 没有安装市场
         else {
-            T.showLong(getActivity(),"无法打开应用市场");
+            ToastUtils.showLong(getActivity(),"无法打开应用市场");
 
         }
     }

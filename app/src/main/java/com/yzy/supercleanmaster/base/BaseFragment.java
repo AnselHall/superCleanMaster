@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import com.yzy.supercleanmaster.utils.T;
+import com.yzy.supercleanmaster.utils.ToastUtils;
 
 
 @SuppressLint("NewApi")
@@ -47,10 +47,10 @@ public class BaseFragment extends Fragment {
 	 * @param message
 	 */
 	protected void showShort(String message) {
-		T.showShort(getActivity(), message);
+		ToastUtils.showShort(getActivity(), message);
 	}
 
 	protected void showLong(String message) {
-		T.showLong(getActivity(), message);
+		ToastUtils.showLong(getActivity(), message);
 	}
 }

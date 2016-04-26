@@ -20,7 +20,7 @@ import com.yzy.supercleanmaster.model.AutoStartInfo;
 import com.yzy.supercleanmaster.utils.BootStartUtils;
 import com.yzy.supercleanmaster.utils.RootUtil;
 import com.yzy.supercleanmaster.utils.ShellUtils;
-import com.yzy.supercleanmaster.utils.T;
+import com.yzy.supercleanmaster.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +118,7 @@ public class AutoStartFragment extends BaseFragment {
 
         ShellUtils.CommandResult mCommandResult = ShellUtils.execCommand(mSring, true, true);
         if (mCommandResult.result == 0) {
-            T.showLong(mContext, "应用已经全部禁止");
+            ToastUtils.showLong(mContext, "应用已经全部禁止");
             for (AutoStartInfo auto : noSystemAuto) {
                 if (auto.isEnable()) {
                     auto.setEnable(false);
@@ -127,7 +127,7 @@ public class AutoStartFragment extends BaseFragment {
             mAutoStartAdapter.notifyDataSetChanged();
             refeshButoom();
         } else {
-            T.showLong(mContext, "该功能需要获取系统root权限，请允许获取root权限");
+            ToastUtils.showLong(mContext, "该功能需要获取系统root权限，请允许获取root权限");
         }
     }
 

@@ -35,7 +35,7 @@ import com.yzy.supercleanmaster.model.StorageSize;
 import com.yzy.supercleanmaster.service.CoreService;
 import com.yzy.supercleanmaster.utils.StorageUtil;
 import com.yzy.supercleanmaster.utils.SystemBarTintManager;
-import com.yzy.supercleanmaster.utils.T;
+import com.yzy.supercleanmaster.utils.ToastUtils;
 import com.yzy.supercleanmaster.utils.UIElementsHelper;
 import com.yzy.supercleanmaster.widget.textcounter.CounterView;
 import com.yzy.supercleanmaster.widget.textcounter.formatters.DecimalFormatter;
@@ -260,7 +260,7 @@ public class MemoryCleanActivity extends BaseSwipeBackActivity implements OnDism
             }
         }
         Allmemory = Allmemory - killAppmemory;
-        T.showLong(mContext, "共清理" + StorageUtil.convertStorage(killAppmemory) + "内存");
+        ToastUtils.showLong(mContext, "共清理" + StorageUtil.convertStorage(killAppmemory) + "内存");
         if (Allmemory > 0) {
             refeshTextCounter();
         }

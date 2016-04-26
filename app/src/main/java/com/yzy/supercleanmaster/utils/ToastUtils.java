@@ -9,7 +9,7 @@ import android.widget.Toast;
  * @author way
  * 
  */
-public class T {
+public class ToastUtils {
 	// Toast
 	private static Toast toast;
 

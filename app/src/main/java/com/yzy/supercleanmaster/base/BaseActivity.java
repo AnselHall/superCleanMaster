@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 import com.yzy.supercleanmaster.dialogs.ProgressDialogFragment;
-import com.yzy.supercleanmaster.utils.T;
+import com.yzy.supercleanmaster.utils.ToastUtils;
 
 import butterknife.ButterKnife;
 
@@ -99,11 +99,11 @@ public abstract class BaseActivity extends FragmentActivity {
 	// * @param message
 	// */
 	protected void showShort(String message) {
-		T.showShort(mContext, message);
+		ToastUtils.showShort(mContext, message);
 	}
 
 	protected void showLong(String message) {
-		T.showLong(mContext, message);
+		ToastUtils.showLong(mContext, message);
 	}
 
 	@Override
