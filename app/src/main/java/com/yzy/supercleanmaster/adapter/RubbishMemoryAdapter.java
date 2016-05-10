@@ -18,14 +18,17 @@ import com.yzy.supercleanmaster.model.CacheListItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RublishMemoryAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
+/**
+ * 这里将 ListView 的 Adapter 和 item 的点击事件的监听器写在了一起，方便判断点击的是哪个 item。
+ */
+public class RubbishMemoryAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
 
     public List<CacheListItem> mlistAppInfo;
     LayoutInflater infater = null;
     private Context mContext;
     public static List<Integer> clearIds;
 
-    public RublishMemoryAdapter(Context context, List<CacheListItem> apps) {
+    public RubbishMemoryAdapter(Context context, List<CacheListItem> apps) {
         infater = LayoutInflater.from(context);
         mContext = context;
         clearIds = new ArrayList<Integer>();
@@ -34,19 +37,16 @@ public class RublishMemoryAdapter extends BaseAdapter implements AdapterView.OnI
 
     @Override
     public int getCount() {
-        // TODO Auto-generated method stub
         return mlistAppInfo.size();
     }
 
     @Override
     public Object getItem(int position) {
-        // TODO Auto-generated method stub
         return mlistAppInfo.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
         return position;
     }
 
@@ -75,12 +75,12 @@ public class RublishMemoryAdapter extends BaseAdapter implements AdapterView.OnI
             holder.packageName = item.getPackageName();
         }
 
-
         return convertView;
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 
         if (viewHolder != null && viewHolder.packageName != null) {
@@ -97,7 +97,6 @@ public class RublishMemoryAdapter extends BaseAdapter implements AdapterView.OnI
         ImageView appIcon;
         TextView appName;
         TextView size;
-
 
         String packageName;
     }

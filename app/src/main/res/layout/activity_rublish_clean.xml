@@ -38,7 +38,7 @@
                     android:layout_marginTop="10dip"
                     android:layout_marginLeft="@dimen/margin_right"
                     android:layout_toRightOf="@+id/textCounter"
-                    android:id="@+id/sufix"
+                    android:id="@+id/suffix"
                     android:layout_width="wrap_content"
                     android:textColor="@color/white"
                     android:text="KB"
@@ -49,7 +49,7 @@
                     android:layout_marginLeft="@dimen/margin_right"
                     android:layout_marginTop="10dip"
                     android:layout_toRightOf="@+id/textCounter"
-                    android:layout_below="@+id/sufix"
+                    android:layout_below="@+id/suffix"
                     android:layout_width="wrap_content"
 
                     android:textColor="@color/white"

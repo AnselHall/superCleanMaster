@@ -29,9 +29,10 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-
+/**
+ * 自启程序的Fragment
+ */
 public class AutoStartFragment extends BaseFragment {
-
 
     Context mContext;
     public static final int REFRESH_BT = 111;
@@ -60,8 +61,7 @@ public class AutoStartFragment extends BaseFragment {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case REFRESH_BT:
-                    refeshButoom();
-
+                    refreshButtom();
                     break;
             }
         }
@@ -77,7 +77,6 @@ public class AutoStartFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
 
         View view = inflater.inflate(R.layout.fragment_auto_start, container, false);
         ButterKnife.inject(this, view);
@@ -125,7 +124,7 @@ public class AutoStartFragment extends BaseFragment {
                 }
             }
             mAutoStartAdapter.notifyDataSetChanged();
-            refeshButoom();
+            refreshButtom();
         } else {
             ToastUtils.showLong(mContext, "该功能需要获取系统root权限，请允许获取root权限");
         }
@@ -160,18 +159,16 @@ public class AutoStartFragment extends BaseFragment {
         if (position == 0) {
             mAutoStartAdapter = new AutoStartAdapter(mContext, noSystemAuto, mHandler);
             listview.setAdapter(mAutoStartAdapter);
-            refeshButoom();
+            refreshButtom();
         } else {
 
             mAutoStartAdapter = new AutoStartAdapter(mContext, isSystemAuto, null);
             listview.setAdapter(mAutoStartAdapter);
 
         }
-
-
     }
 
-    private void refeshButoom() {
+    private void refreshButtom() {
         if (position == 0) {
             canDisableCom = 0;
             for (AutoStartInfo autoS : noSystemAuto) {
@@ -186,7 +183,6 @@ public class AutoStartFragment extends BaseFragment {
                 bottom_lin.setVisibility(View.GONE);
             }
         }
-
     }
 
     @Override

@@ -22,7 +22,7 @@
                 android:layout_centerVertical="true">
 
                 <com.yzy.supercleanmaster.widget.circleprogress.ArcProgress
-                    android:id="@+id/arc_store"
+                    android:id="@+id/storage_progress"
                     android:layout_width="180dp"
                     android:layout_height="180dp"
                     custom:arc_bottom_text="存储空间"
@@ -45,7 +45,7 @@
             </RelativeLayout>
 
             <com.yzy.supercleanmaster.widget.circleprogress.ArcProgress
-                android:id="@+id/arc_process"
+                android:id="@+id/memory_process"
                 android:layout_width="100dp"
                 android:layout_marginLeft="15dip"
                 android:layout_toRightOf="@+id/arc_left"

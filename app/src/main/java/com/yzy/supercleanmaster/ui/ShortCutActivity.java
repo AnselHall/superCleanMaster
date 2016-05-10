@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.view.animation.AnimationUtils;
@@ -29,8 +30,10 @@ import java.util.List;
 
 import butterknife.InjectView;
 
-
-public class ShortCutActivity extends BaseActivity implements CoreService.OnPeocessActionListener {
+/**
+ * 一键清理 activity,一键清理图标，
+ */
+public class ShortCutActivity extends BaseActivity implements CoreService.OnPrecessActionListener {
 
     @InjectView(R.id.layout_anim)
     RelativeLayout layoutAnim;
@@ -52,8 +55,6 @@ public class ShortCutActivity extends BaseActivity implements CoreService.OnPeoc
             mCoreService.setOnActionListener(ShortCutActivity.this);
             mCoreService.cleanAllProcess();
             //  updateStorageUsage();
-
-
         }
 
         @Override
@@ -68,6 +69,9 @@ public class ShortCutActivity extends BaseActivity implements CoreService.OnPeoc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_short_cut);
         rect = getIntent().getSourceBounds();
+
+//        Log.e("tag", "width: " + rect.width() + "    height :" + rect.height());
+
         if (rect == null) {
             finish();
             return;
@@ -85,6 +89,8 @@ public class ShortCutActivity extends BaseActivity implements CoreService.OnPeoc
                 field = c.getField("status_bar_height");
                 x = Integer.parseInt(field.get(obj).toString());
                 statusBarHeight = getResources().getDimensionPixelSize(x);
+                Log.e("tag", "field.get(obj): " + field.get(obj)  + " statusBarHeight = " + statusBarHeight);
+
             } catch (Exception e1) {
 
                 e1.printStackTrace();
@@ -116,6 +122,7 @@ public class ShortCutActivity extends BaseActivity implements CoreService.OnPeoc
 
             mRelativeLayout.updateViewLayout(layoutAnim, layoutparams);
         }
+
         cleanLightImg.startAnimation(AnimationUtils.loadAnimation(this,
                 R.anim.rotate_anim));
         bindService(new Intent(mContext, CoreService.class),
@@ -149,14 +156,11 @@ public class ShortCutActivity extends BaseActivity implements CoreService.OnPeoc
         } else {
             ToastUtils.showLong(mContext, "您刚刚清理过内存,请稍后再来~");
         }
-
         finish();
     }
 
 
     private void killProcess() {
-        // TODO Auto-generated method stub
-
         ActivityManager am = (ActivityManager) getBaseContext()
                 .getApplicationContext().getSystemService(
                         Context.ACTIVITY_SERVICE);

@@ -17,7 +17,7 @@ import com.yzy.supercleanmaster.utils.SharedPreferencesUtils;
 import java.util.Random;
 
 
-public class SplishActivity extends BaseActivity {
+public class SplashActivity extends BaseActivity {
 
     /**
      * 淡入动画
@@ -90,6 +90,7 @@ public class SplishActivity extends BaseActivity {
         mFadeInScale = AnimationUtils.loadAnimation(this,
                 R.anim.welcome_fade_in_scale);
         mFadeInScale.setDuration(2000);
+        mFadeInScale.setFillAfter(true);
 
         mFadeOut = AnimationUtils.loadAnimation(this, R.anim.welcome_fade_out);
         mFadeOut.setDuration(500);

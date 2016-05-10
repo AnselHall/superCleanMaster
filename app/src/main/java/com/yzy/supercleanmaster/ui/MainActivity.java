@@ -65,7 +65,6 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
 
         onNavigationDrawerItemSelected(0);
         initDrawer();
-
     }
 
 

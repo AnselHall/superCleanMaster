@@ -28,8 +28,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+/**
+ * 清理服务，在这里完成清理任务
+ * 使用AIDL执行扫描和清理任务。
+ */
 public class CleanerService extends Service {
 
+    //@formatter:off
     public static final String ACTION_CLEAN_AND_EXIT = "com.yzy.cache.cleaner.CLEAN_AND_EXIT";
 
     private static final String TAG = "CleanerService";
@@ -38,18 +43,23 @@ public class CleanerService extends Service {
     private OnActionListener mOnActionListener;
     private boolean mIsScanning = false;
     private boolean mIsCleaning = false;
+    /**缓存大小*/
     private long mCacheSize = 0;
 
-    public static interface OnActionListener {
-        public void onScanStarted(Context context);
+    private CleanerServiceBinder mBinder = new CleanerServiceBinder();
 
-        public void onScanProgressUpdated(Context context, int current, int max);
+    //@formatter:on
 
-        public void onScanCompleted(Context context, List<CacheListItem> apps);
+    public interface OnActionListener {
+        void onScanStarted(Context context);
 
-        public void onCleanStarted(Context context);
+        void onScanProgressUpdated(Context context, int current, int max);
 
-        public void onCleanCompleted(Context context, long cacheSize);
+        void onScanCompleted(Context context, List<CacheListItem> apps);
+
+        void onCleanStarted(Context context);
+
+        void onCleanCompleted(Context context, long cacheSize);
     }
 
     public class CleanerServiceBinder extends Binder {
@@ -59,8 +69,9 @@ public class CleanerService extends Service {
         }
     }
 
-    private CleanerServiceBinder mBinder = new CleanerServiceBinder();
-
+    /**
+     * 扫描任务，监测可清理的缓存文件
+     */
     private class TaskScan extends AsyncTask<Void, Integer, List<CacheListItem>> {
 
         private int mAppCount = 0;
@@ -76,6 +87,7 @@ public class CleanerService extends Service {
         protected List<CacheListItem> doInBackground(Void... params) {
             mCacheSize = 0;
 
+            //获取安装的应用信息，
             final List<ApplicationInfo> packages = getPackageManager().getInstalledApplications(
                     PackageManager.GET_META_DATA);
 
@@ -85,6 +97,7 @@ public class CleanerService extends Service {
 
             final List<CacheListItem> apps = new ArrayList<CacheListItem>();
 
+            //使用 AIDL 实现
             try {
                 for (ApplicationInfo pkg : packages) {
                     mGetPackageSizeInfoMethod.invoke(getPackageManager(), pkg.packageName,
@@ -149,6 +162,9 @@ public class CleanerService extends Service {
         }
     }
 
+    /**
+     * 清理任务，清理缓存垃圾
+     */
     private class TaskClean extends AsyncTask<Void, Void, Long> {
 
         @Override
@@ -214,10 +230,11 @@ public class CleanerService extends Service {
         }
     }
 
+    //当使用startService(intent)时 会调用这个方法
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String action = intent.getAction();
-
+        //扫描完成后自动清理，清理完成后，提示清理信息，5秒后自动停止服务，
         if (action != null) {
             if (action.equals(ACTION_CLEAN_AND_EXIT)) {
                 setOnActionListener(new OnActionListener() {
@@ -255,6 +272,7 @@ public class CleanerService extends Service {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
+                                //停止服务，与调用 stopService(intent) 相同
                                 stopSelf();
                             }
                         }, 5000);

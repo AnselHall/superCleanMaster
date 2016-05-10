@@ -30,6 +30,13 @@ import java.io.File;
 public class StorageUtil {
 
     // storage, G M K B
+
+    /**
+     * 格式化存储空间大小的显示  G M K B
+     *
+     * @param size
+     * @return
+     */
     public static String convertStorage(long size) {
         long kb = 1024;
         long mb = kb * 1024;
@@ -82,17 +89,23 @@ public class StorageUtil {
 
     public static SDCardInfo getSDCardInfo() {
         // String sDcString = Environment.getExternalStorageState();
+        //判断是否为SD卡，可移除的，表示未外部SD卡
+//        Log.e("tag", "getPath: " + Environment.getExternalStorageDirectory().getPath());
+//        Log.e("tag", "getAbsolutePath: " + Environment.getExternalStorageDirectory().getAbsolutePath());
+
+        /*Environment.getExternalStorageDirectory().getPath(): /storage/emulated/0
+          Environment.getExternalStorageDirectory().getAbsolutePath(): /storage/emulated/0*/
 
         if (Environment.isExternalStorageRemovable()) {
-            String sDcString = Environment.getExternalStorageState();
-            if (sDcString.equals(Environment.MEDIA_MOUNTED)) {
-                File pathFile = Environment
-                        .getExternalStorageDirectory();
+            //判断SD卡是否挂载
+            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                File pathFile = Environment.getExternalStorageDirectory();
 
+                //  pathFile.getAbsolutePath() : /storage/sdcard0
+                //  pathFile.getPath() : /storage/sdcard0
                 try {
-                    StatFs statfs = new StatFs(
-                            pathFile.getPath());
-
+                    //StatFs：Stats of the filesystem  文件系统的统计
+                    StatFs statfs = new StatFs(pathFile.getPath());
                     // 获取SDCard上BLOCK总数
                     long nTotalBlocks = statfs.getBlockCount();
 
@@ -100,17 +113,17 @@ public class StorageUtil {
                     long nBlocSize = statfs.getBlockSize();
 
                     // 获取可供程序使用的Block的数量
-                    long nAvailaBlock = statfs.getAvailableBlocks();
+                    long nAvailableBlock = statfs.getAvailableBlocks();
 
                     // 获取剩下的所有Block的数量(包括预留的一般程序无法使用的块)
-                    long nFreeBlock = statfs.getFreeBlocks();
+//                    long nFreeBlock = statfs.getFreeBlocks();
 
                     SDCardInfo info = new SDCardInfo();
                     // 计算SDCard 总容量大小MB
                     info.total = nTotalBlocks * nBlocSize;
 
                     // 计算 SDCard 剩余大小MB
-                    info.free = nAvailaBlock * nBlocSize;
+                    info.free = nAvailableBlock * nBlocSize;
 
                     return info;
                 } catch (IllegalArgumentException e) {

@@ -18,10 +18,11 @@ package com.yzy.supercleanmaster.model;
 // TODO: Auto-generated Javadoc
 
 /**
-
+ * SD卡的信息
  */
 public class SDCardInfo {
+    /**总大小*/
     public long total;
-
+    /**剩余空间大小*/
     public long free;
 }

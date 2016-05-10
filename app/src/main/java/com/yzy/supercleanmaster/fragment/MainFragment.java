@@ -30,24 +30,31 @@ import butterknife.OnClick;
 
 public class MainFragment extends BaseFragment {
 
-    @InjectView(R.id.arc_store)
-    ArcProgress arcStore;
+    //@formatter:off
 
-    @InjectView(R.id.arc_process)
-    ArcProgress arcProcess;
+    /**展示存储空间的进度条*/
+    @InjectView(R.id.storage_progress)
+    ArcProgress storage_progress;
+
+    /**显示内存信息的进度条*/
+    @InjectView(R.id.memory_process)
+    ArcProgress memory_process;
+
     @InjectView(R.id.capacity)
     TextView capacity;
 
     Context mContext;
 
+    /**内存信息的计时器*/
     private Timer timer;
+    /**存储空间进度条的计时器*/
     private Timer timer2;
 
+    //@formatter:on
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
 
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.inject(this, view);
@@ -55,7 +62,6 @@ public class MainFragment extends BaseFragment {
 
         return view;
     }
-
 
     @Override
     public void onResume() {
@@ -65,25 +71,22 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onActivityCreated(savedInstanceState);
         UmengUpdateAgent.update(getActivity());
     }
 
     private void fillData() {
-        // TODO Auto-generated method stub
         timer = null;
         timer2 = null;
         timer = new Timer();
         timer2 = new Timer();
 
+        long availMemory = AppUtil.getAvailMemory(mContext);
+        long totalMemory = AppUtil.getTotalMemory(mContext);
+        final double x = (((totalMemory - availMemory) / (double) totalMemory) * 100);
+        //   memory_process.setProgress((int) x);
 
-        long l = AppUtil.getAvailMemory(mContext);
-        long y = AppUtil.getTotalMemory(mContext);
-        final double x = (((y - l) / (double) y) * 100);
-        //   arcProcess.setProgress((int) x);
-
-        arcProcess.setProgress(0);
+        memory_process.setProgress(0);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -91,13 +94,11 @@ public class MainFragment extends BaseFragment {
                     @Override
                     public void run() {
 
-
-                        if (arcProcess.getProgress() >= (int) x) {
+                        if (memory_process.getProgress() >= (int) x) {
                             timer.cancel();
                         } else {
-                            arcProcess.setProgress(arcProcess.getProgress() + 1);
+                            memory_process.setProgress(memory_process.getProgress() + 1);
                         }
-
                     }
                 });
             }
@@ -106,20 +107,23 @@ public class MainFragment extends BaseFragment {
         SDCardInfo mSDCardInfo = StorageUtil.getSDCardInfo();
         SDCardInfo mSystemInfo = StorageUtil.getSystemSpaceInfo(mContext);
 
-        long nAvailaBlock;
+        /*可用空间，包括系统空间和SD卡存储空间*/
+        long mAvailableBlock;
+        /*总共空间*/
         long TotalBlocks;
         if (mSDCardInfo != null) {
-            nAvailaBlock = mSDCardInfo.free + mSystemInfo.free;
+            mAvailableBlock = mSDCardInfo.free + mSystemInfo.free;
             TotalBlocks = mSDCardInfo.total + mSystemInfo.total;
         } else {
-            nAvailaBlock = mSystemInfo.free;
+            /*没有SD卡  所有的存储空间信息就是系统的存储空间信息*/
+            mAvailableBlock = mSystemInfo.free;
             TotalBlocks = mSystemInfo.total;
         }
 
-        final double percentStore = (((TotalBlocks - nAvailaBlock) / (double) TotalBlocks) * 100);
+        final double percentStore = (((TotalBlocks - mAvailableBlock) / (double) TotalBlocks) * 100);
 
-        capacity.setText(StorageUtil.convertStorage(TotalBlocks - nAvailaBlock) + "/" + StorageUtil.convertStorage(TotalBlocks));
-        arcStore.setProgress(0);
+        capacity.setText(StorageUtil.convertStorage(TotalBlocks - mAvailableBlock) + "/" + StorageUtil.convertStorage(TotalBlocks));
+        storage_progress.setProgress(0);
 
         timer2.schedule(new TimerTask() {
             @Override
@@ -128,19 +132,15 @@ public class MainFragment extends BaseFragment {
                     @Override
                     public void run() {
 
-
-                        if (arcStore.getProgress() >= (int) percentStore) {
+                        if (storage_progress.getProgress() >= (int) percentStore) {
                             timer2.cancel();
                         } else {
-                            arcStore.setProgress(arcStore.getProgress() + 1);
+                            storage_progress.setProgress(storage_progress.getProgress() + 1);
                         }
-
                     }
                 });
             }
         }, 50, 20);
-
-
     }
 
     @OnClick(R.id.card1)
@@ -148,12 +148,10 @@ public class MainFragment extends BaseFragment {
         startActivity(MemoryCleanActivity.class);
     }
 
-
     @OnClick(R.id.card2)
     void rubbishClean() {
         startActivity(RubbishCleanActivity.class);
     }
-
 
     @OnClick(R.id.card3)
     void AutoStartManage() {
@@ -170,7 +168,6 @@ public class MainFragment extends BaseFragment {
         super.onDestroyView();
         ButterKnife.reset(this);
     }
-
 
     @Override
     public void onDestroy() {

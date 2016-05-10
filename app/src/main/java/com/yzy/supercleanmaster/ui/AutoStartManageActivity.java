@@ -25,15 +25,13 @@ import com.yzy.supercleanmaster.views.SlidingTab;
 
 import butterknife.InjectView;
 
-
+/**
+ * 自启程序的管理
+ */
 public class AutoStartManageActivity extends BaseSwipeBackActivity {
 
     ActionBar ab;
-
-
     Resources res;
-
-
     @InjectView(R.id.tabs)
     SlidingTab tabs;
 
@@ -41,7 +39,6 @@ public class AutoStartManageActivity extends BaseSwipeBackActivity {
     ViewPager pager;
 
     private MyPagerAdapter adapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

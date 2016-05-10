@@ -22,14 +22,16 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 核心服务：执行扫描和清理任务
+ */
 public class CoreService extends Service {
 
     public static final String ACTION_CLEAN_AND_EXIT = "com.yzy.service.cleaner.CLEAN_AND_EXIT";
 
     private static final String TAG = "CleanerService";
 
-
-    private OnPeocessActionListener mOnActionListener;
+    private OnPrecessActionListener mOnActionListener;
     private boolean mIsScanning = false;
     private boolean mIsCleaning = false;
 
@@ -38,17 +40,16 @@ public class CoreService extends Service {
     PackageManager packageManager = null;
     Context mContext;
 
+    public interface OnPrecessActionListener {
+        void onScanStarted(Context context);
 
-    public static interface OnPeocessActionListener {
-        public void onScanStarted(Context context);
+        void onScanProgressUpdated(Context context, int current, int max);
 
-        public void onScanProgressUpdated(Context context, int current, int max);
+        void onScanCompleted(Context context, List<AppProcessInfo> apps);
 
-        public void onScanCompleted(Context context, List<AppProcessInfo> apps);
+        void onCleanStarted(Context context);
 
-        public void onCleanStarted(Context context);
-
-        public void onCleanCompleted(Context context, long cacheSize);
+        void onCleanCompleted(Context context, long cacheSize);
     }
 
     public class ProcessServiceBinder extends Binder {
@@ -78,8 +79,6 @@ public class CoreService extends Service {
         } catch (Exception e) {
 
         }
-
-
     }
 
     @Override
@@ -88,22 +87,17 @@ public class CoreService extends Service {
 
         if (action != null) {
             if (action.equals(ACTION_CLEAN_AND_EXIT)) {
-                setOnActionListener(new OnPeocessActionListener() {
+                setOnActionListener(new OnPrecessActionListener() {
                     @Override
                     public void onScanStarted(Context context) {
-
                     }
 
                     @Override
                     public void onScanProgressUpdated(Context context, int current, int max) {
-
                     }
 
                     @Override
                     public void onScanCompleted(Context context, List<AppProcessInfo> apps) {
-                        //   if (getCacheSize() > 0) {
-                        //     cleanCache();
-                        // }
                     }
 
                     @Override
@@ -136,7 +130,9 @@ public class CoreService extends Service {
         return START_NOT_STICKY;
     }
 
-
+    /**
+     * 扫描任务
+     */
     private class TaskScan extends AsyncTask<Void, Integer, List<AppProcessInfo>> {
 
         private int mAppCount = 0;
@@ -187,11 +183,11 @@ public class CoreService extends Service {
                         if (appInfo != null) {
                             Drawable icon = appInfo.loadIcon(packageManager);
                             abAppProcessInfo.icon = icon;
-                        }else{
+                        } else {
                             abAppProcessInfo.icon = mContext.getResources().getDrawable(R.drawable.ic_launcher);
                         }
 
-                    }else{
+                    } else {
                         abAppProcessInfo.icon = mContext.getResources().getDrawable(R.drawable.ic_launcher);
                     }
                     abAppProcessInfo.isSystem = true;
@@ -204,8 +200,6 @@ public class CoreService extends Service {
 
                 list.add(abAppProcessInfo);
             }
-
-
             return list;
         }
 
@@ -312,11 +306,11 @@ public class CoreService extends Service {
         new TaskClean().execute();
     }
 
-    public void setOnActionListener(OnPeocessActionListener listener) {
+    public void setOnActionListener(OnPrecessActionListener listener) {
         mOnActionListener = listener;
     }
 
-    public ApplicationInfo getApplicationInfo( String processName) {
+    public ApplicationInfo getApplicationInfo(String processName) {
         if (processName == null) {
             return null;
         }

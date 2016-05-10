@@ -31,9 +31,10 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-
+/**
+ * 软件管理的Fragment
+ */
 public class SoftwareManageFragment extends BaseFragment {
-
 
     Context mContext;
     public static final int REFRESH_BT = 111;
@@ -43,7 +44,6 @@ public class SoftwareManageFragment extends BaseFragment {
 
     @InjectView(R.id.listview)
     ListView listview;
-
 
     @InjectView(R.id.topText)
     TextView topText;
@@ -58,20 +58,16 @@ public class SoftwareManageFragment extends BaseFragment {
 
     AsyncTask<Void, Integer, List<AppInfo>> task;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         position = getArguments().getInt(ARG_POSITION);
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
 
         View view = inflater.inflate(R.layout.fragment_software, container, false);
         ButterKnife.inject(this, view);
@@ -80,14 +76,12 @@ public class SoftwareManageFragment extends BaseFragment {
             mGetPackageSizeInfoMethod = mContext.getPackageManager().getClass().getMethod(
                     "getPackageSizeInfo", String.class, IPackageStatsObserver.class);
 
-
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
 
         return view;
     }
-
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -111,12 +105,9 @@ public class SoftwareManageFragment extends BaseFragment {
 
         if (position == 0) {
             topText.setText("");
-
         } else {
             topText.setText("卸载下列软件，会影响正常使用");
-
         }
-
 
         task = new AsyncTask<Void, Integer, List<AppInfo>>() {
             private int mAppCount = 0;
@@ -155,9 +146,9 @@ public class SoftwareManageFragment extends BaseFragment {
                     appInfo.setPackname(packname);
                     String version = packInfo.versionName;
                     appInfo.setVersion(version);
+
                     try {
-                        mGetPackageSizeInfoMethod.invoke(mContext.getPackageManager(), new Object[]{
-                                packname,
+                        mGetPackageSizeInfoMethod.invoke(mContext.getPackageManager(), packname,
                                 new IPackageStatsObserver.Stub() {
                                     @Override
                                     public void onGetStatsCompleted(PackageStats pStats, boolean succeeded) throws RemoteException {
@@ -166,9 +157,9 @@ public class SoftwareManageFragment extends BaseFragment {
 
                                         }
                                     }
-                                }
-                        });
+                                });
                     } catch (Exception e) {
+                        e.printStackTrace();
                     }
 
                     appinfos.add(appInfo);
@@ -181,9 +172,8 @@ public class SoftwareManageFragment extends BaseFragment {
                 try {
                     mProgressBarText.setText(getString(R.string.scanning_m_of_n, values[0], values[1]));
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
-
             }
 
             @Override
@@ -192,7 +182,7 @@ public class SoftwareManageFragment extends BaseFragment {
                     showProgressBar(true);
                     mProgressBarText.setText(R.string.scanning);
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
 
                 //    loading.setVisibility(View.VISIBLE);
@@ -203,10 +193,7 @@ public class SoftwareManageFragment extends BaseFragment {
             protected void onPostExecute(List<AppInfo> result) {
 
                 super.onPostExecute(result);
-
-
                 try {
-
                     showProgressBar(false);
 
                     userAppInfos = new ArrayList<>();
@@ -232,16 +219,12 @@ public class SoftwareManageFragment extends BaseFragment {
 
                     }
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
             }
-
         };
         task.execute();
-
-
     }
-
 
     private boolean isProgressBarVisible() {
         return mProgressBar.getVisibility() == View.VISIBLE;
@@ -262,5 +245,4 @@ public class SoftwareManageFragment extends BaseFragment {
         super.onDestroyView();
         ButterKnife.reset(this);
     }
-
 }

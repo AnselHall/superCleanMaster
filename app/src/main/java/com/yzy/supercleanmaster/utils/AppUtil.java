@@ -988,7 +988,7 @@ public class AppUtil {
                 L.d(AppUtil.class, str + "\t");
             }
             // 获得系统总内存，单位KB
-            memory = Integer.valueOf(strs[1]).intValue() ;
+            memory = Integer.valueOf(strs[1]) ;
             bufferedReader.close();
         } catch (Exception e) {
             e.printStackTrace();

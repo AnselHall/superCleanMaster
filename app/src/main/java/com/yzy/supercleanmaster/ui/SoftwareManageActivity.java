@@ -30,9 +30,7 @@ public class SoftwareManageActivity extends BaseSwipeBackActivity {
 
     ActionBar ab;
 
-
     Resources res;
-
 
     @InjectView(R.id.tabs)
     SlidingTab tabs;
@@ -42,7 +40,6 @@ public class SoftwareManageActivity extends BaseSwipeBackActivity {
 
     private MyPagerAdapter adapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +48,6 @@ public class SoftwareManageActivity extends BaseSwipeBackActivity {
 
         getActionBar().setHomeButtonEnabled(true);
       //  applyKitKatTranslucency();
-
 
         res = getResources();
         adapter = new MyPagerAdapter(getSupportFragmentManager());
@@ -65,9 +61,7 @@ public class SoftwareManageActivity extends BaseSwipeBackActivity {
 
         tabs.setViewPager(pager);
         setTabsValue();
-
     }
-
 
     private void setTabsValue() {
         DisplayMetrics dm = getResources().getDisplayMetrics();
@@ -91,14 +85,11 @@ public class SoftwareManageActivity extends BaseSwipeBackActivity {
         tabs.setSelectedTextColor(Color.parseColor("#ffffff"));
         // 取消点击Tab时的背景色
         tabs.setTabBackground(0);
-
     }
-
 
     /**
      * Apply KitKat specific translucency.
      */
-
     private void applyKitKatTranslucency() {
 
         // KitKat translucent navigation/status bar.
@@ -112,12 +103,9 @@ public class SoftwareManageActivity extends BaseSwipeBackActivity {
             mTintManager.setTintDrawable(UIElementsHelper
                     .getGeneralActionBarBackground(this));
 
-
             getActionBar().setBackgroundDrawable(
                     UIElementsHelper.getGeneralActionBarBackground(this));
-
         }
-
     }
 
     @Override
@@ -160,11 +148,8 @@ public class SoftwareManageActivity extends BaseSwipeBackActivity {
             saveFragment(fragment);
 
             return fragment;
-
         }
-
     }
-
 
     @TargetApi(19)
     private void setTranslucentStatus(boolean on) {
